@@ -1101,7 +1101,7 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #169ec0;
+  color: white;
   text-decoration: none;
 }
 a:hover,
@@ -3993,7 +3993,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
   color: #ffffff;
-  background-color: #169ec0;
+  background-color: #5bc0de;
 }
 .nav-stacked > li {
   float: none;
@@ -6604,7 +6604,7 @@ body {
 }
 .section {
   position: relative;
-  padding: 35px 0;
+  padding: 10px 0;
 }
 .section .background-image {
   z-index: 0;
@@ -6626,7 +6626,7 @@ body {
   opacity: 0.5;
 }
 .section-info {
-  background-color: #5bc0de !important;
+  background-color: #66afe9 !important;
   color: #ffffff;
 }
 .section-info .background-image {
