@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/projeto_final">
+    <Resource 
+        auth="Container" 
+        autoReconnect="true" 
+        driverClassName="com.mysql.jdbc.Driver" 
+        maxActive="100" 
+        maxIdle="30" 
+        name="jdbc/projeto_final" 
+        password="Get$2015%" 
+        type="javax.sql.DataSource" 
+        url="jdbc:mysql://localhost/lp02_projeto_final" 
+        username="root"/>
+</Context>

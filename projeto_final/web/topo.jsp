@@ -1,0 +1,56 @@
+<%-- 
+    Document   : topo
+    Created on : 16/08/2016, 08:34:14
+    Author     : Alex
+--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<footer class="section section-info" style="background-color: #1253ac">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Irrigação</h1>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-md-12 hidden-xs text-right">
+                        <a href="#"><img src="img\irrigacao-logo.png" width="120px"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <c:if test="${logado != null}">
+                        <ul class="nav nav-pills">                          
+                           
+                            <li class="${param.ativa_index}">
+                                <a href="index.jsp">Home</a>
+                            </li>                            
+                            
+                            <li class="${param.ativa_localizacao}">
+                                <a href="localizacao.jsp">Localização</a>
+                            </li>
+                            <li class="">
+                                <a href="sensores.html">Sensores</a>
+                            </li>
+                            <li>
+                                <a href="configuracao.html">Configuração</a>
+                            </li>
+                            <ul class="nav nav-pills navbar-right">                                
+                            <li>
+                                <a href="LogoutServlet">Sair</a>
+                            </li>                        
+                            </ul>
+                        
+                        </ul>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
