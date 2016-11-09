@@ -8,6 +8,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>br.edu.ifcriodosul.servlet.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LocalServlet</servlet-name>
+        <servlet-class>br.edu.ifcriodosul.servlet.LocalServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UsuarioServlet</servlet-name>
         <url-pattern>/UsuarioServlet</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LocalServlet</servlet-name>
+        <url-pattern>/LocalServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

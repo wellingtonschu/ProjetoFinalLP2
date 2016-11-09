@@ -21,7 +21,24 @@
         <c:import url="topo.jsp">
             <c:param name="ativa_localizacao" value="active"/>
         </c:import>
-            <h1>Hello World!</h1>
+        
+        <div class="container" style="width: 400px">
+
+            <h1 style="text-align: center;">Cadastro de Localização</h1>
+
+            <form class="form-signin" method="POST" action="LocalServlet">
+                     
+                <input id="txtId" type="hidden" name="id" value="${localizacao.id}"/>
+                <label for="txtIdArduino">ID Arduíno</label>
+                <input value="${localizacao.idArduino}" type="text" id="txtIdArduino" name="idArduino" class="form-control" required autofocus/>
+                <label for="txtLocalizacao">Localização</label>
+                <input value="${localizacao.local}" type="text" id="txtLocalizacao" class="form-control" name="local" required autofocus/>
+                
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="acao" value="inserir">Salvar</button>
+            </form>
+            
+        </div>
+            
         <c:import url="rodape.jsp" />
     </body>
 </html>

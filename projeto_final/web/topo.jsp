@@ -32,7 +32,7 @@
                             </li>                            
                             
                             <li class="${param.ativa_localizacao}">
-                                <a href="localizacao.jsp">Localização</a>
+                                <a href="LocalServlet">Localização</a>
                             </li>
                             <li class="">
                                 <a href="sensores.html">Sensores</a>
