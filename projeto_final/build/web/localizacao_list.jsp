@@ -19,6 +19,7 @@
     </head>
     <body>
 
+
         <c:import url="topo.jsp">
             <c:param name="ativa_localizacao" value="active"/>
         </c:import>
@@ -28,6 +29,7 @@
             <h2>Lista vazia</h2>
         </c:if>
         <c:if test="${locais!=null}">
+            
             <table class="table table-hover">
                 <thead>
                 <th>ID</th>
@@ -48,6 +50,12 @@
         </table>
     </c:if>
 
+            <%
+                String erro = request.getParameter("erro");
+                if ((erro != null) && (erro.equalsIgnoreCase("1"))) {
+                    out.print("<h2>Login/senha inexistente</h2>");
+                }
+            %>
     <div>
         <a href="localizacao.jsp"><input type="button" value="Novo"></a>
     </div>

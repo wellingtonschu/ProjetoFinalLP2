@@ -36,9 +36,8 @@ public class LocalServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private EntityManager em = null;
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ex_jpaPU");
@@ -71,7 +70,7 @@ public class LocalServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-    
+
     protected String listar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String saida = "";
@@ -104,14 +103,14 @@ public class LocalServlet extends HttpServlet {
     protected String inserir(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String saida = "localizacao_list.jsp";
-        
+
         //criar objeto
         Localizacao l = new Localizacao();
-        
+
         //preencher objeto
         l.setIdArduino(request.getParameter("idArduino"));
         l.setLocal(request.getParameter("local"));
-        
+
         //salvar
         EntityTransaction tx = em.getTransaction();
         try {
@@ -137,7 +136,7 @@ public class LocalServlet extends HttpServlet {
         //preencher objeto
         l.setIdArduino(request.getParameter("idArduino"));
         l.setLocal(request.getParameter("local"));
-         
+
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -160,13 +159,23 @@ public class LocalServlet extends HttpServlet {
         Long id = Long.parseLong(idStr);
         Localizacao l = em.find(Localizacao.class, id);
 
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.remove(l);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
+        int valida = 0;
+
+        Query q = em.createQuery("FROM Usuario WHERE localizacao_id = :id");
+        q.setParameter("id", id);
+        valida = q.getResultList().size();
+
+        if (valida == 0) {
+            EntityTransaction tx = em.getTransaction();
+            try {
+                tx.begin();
+                em.remove(l);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+            }
+        } else {
+            saida = "localizacao_list.jsp?erro=1";
         }
 
         return saida;
