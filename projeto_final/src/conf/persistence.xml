@@ -5,6 +5,7 @@
     <non-jta-data-source>java:comp/env/jdbc/projeto_final</non-jta-data-source>
     <class>br.edu.ifcriodosul.conceitual.Localizacao</class>
     <class>br.edu.ifcriodosul.conceitual.Usuario</class>
+    <class>br.edu.ifcriodosul.conceitual.Sensor</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.generate_statistics" value="false"/>

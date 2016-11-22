@@ -91,11 +91,11 @@ public class LocalServlet extends HttpServlet {
 
         String idStr = request.getParameter("id");
         Long id = Long.parseLong(idStr);
-        Usuario u = em.find(Usuario.class, id);
+        Localizacao l = em.find(Localizacao.class, id);
 
         //repassar para pagina (com Dispatcher)
-        request.setAttribute("usuario", u);
-        saida = "usuario_list.jsp";
+        request.setAttribute("localizacao", l);
+        saida = "localizacao.jsp";
         return saida;
 
     }
@@ -164,9 +164,10 @@ public class LocalServlet extends HttpServlet {
         Query q = em.createQuery("FROM Usuario WHERE localizacao_id = :id");
         q.setParameter("id", id);
         valida = q.getResultList().size();
+        
+        EntityTransaction tx = em.getTransaction();
 
-        if (valida == 0) {
-            EntityTransaction tx = em.getTransaction();
+        if (valida == 0) {            
             try {
                 tx.begin();
                 em.remove(l);
@@ -175,8 +176,10 @@ public class LocalServlet extends HttpServlet {
                 tx.rollback();
             }
         } else {
+            request.setAttribute("erro", "1");
             saida = "localizacao_list.jsp?erro=1";
         }
+        saida = "localizacao_list.jsp?erro=1";
 
         return saida;
 
