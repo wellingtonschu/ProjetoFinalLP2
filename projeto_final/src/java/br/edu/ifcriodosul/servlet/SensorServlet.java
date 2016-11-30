@@ -66,6 +66,10 @@ public class SensorServlet extends HttpServlet {
                 destino = listar(request, response);
             } else if (acao.equalsIgnoreCase("selecionar")) {
                 destino = selecionar(request, response);
+            } else if (acao.equalsIgnoreCase("novoRegistro")) {
+                destino = novoRegistro(request, response);
+            } else if (acao.equalsIgnoreCase("cancelar")) {
+                destino = listar(request, response);
             }
             request.getRequestDispatcher(destino).forward(request, response);
         } catch (Exception e) {
@@ -86,6 +90,20 @@ public class SensorServlet extends HttpServlet {
         return saida;
 
     }
+    
+    //FAZ QUE BUSQUE TODOS AS LOCALIZAÇÕES E COLOQUE NA LISTA localizacoes PARA QUE DEPOIS POSSA SER UTILIZADA NO COMBOBOX
+    protected String novoRegistro(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        String saida = "";
+
+         List<Localizacao> locais = em.createQuery("FROM Localizacao").getResultList();
+
+        //repassar para pagina (com Dispatcher)
+        request.setAttribute("locais", locais);
+        
+        saida = "sensor.jsp";
+        return saida;
+    }
 
     protected String selecionar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
@@ -93,31 +111,34 @@ public class SensorServlet extends HttpServlet {
 
         String idStr = request.getParameter("id");
         Long id = Long.parseLong(idStr);
-        Usuario u = em.find(Usuario.class, id);
+        Sensor s = em.find(Sensor.class, id);
 
         //repassar para pagina (com Dispatcher)
-        request.setAttribute("usuario", u);
-        saida = "usuario_list.jsp";
+        request.setAttribute("sensor", s);
+        saida = "sensor_list.jsp";
         return saida;
 
     }
 
     protected String inserir(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String saida = "localizacao_list.jsp";
+        String saida = "sensor_list.jsp";
 
         //criar objeto
+        Sensor s = new Sensor();
         Localizacao l = new Localizacao();
+        
+        l.setId(Long.parseLong(request.getParameter("localizacao")));
 
         //preencher objeto
-        l.setIdArduino(request.getParameter("idArduino"));
-        l.setLocal(request.getParameter("local"));
+        s.setLocalizacao(l);
+        s.setNome(request.getParameter("nome"));
 
         //salvar
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.persist(l);
+            em.persist(s);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -128,21 +149,23 @@ public class SensorServlet extends HttpServlet {
 
     protected String alterar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String saida = "localizacao_list.jsp";
+        String saida = "sensor_list.jsp";
         //criar objeto
 
         String idStr = request.getParameter("id");
         Long id = Long.parseLong(idStr);
-        Localizacao l = em.find(Localizacao.class, id);
+        
+        Sensor s = em.find(Sensor.class, id);
+        Localizacao l = new Localizacao();
 
         //preencher objeto
-        l.setIdArduino(request.getParameter("idArduino"));
-        l.setLocal(request.getParameter("local"));
+        s.setLocalizacao(l);
+        s.setNome(request.getParameter("nome"));
 
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(l);
+            em.merge(s);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -154,18 +177,18 @@ public class SensorServlet extends HttpServlet {
 
     protected String remover(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String saida = "localizacao_list.jsp";
+        String saida = "sensor_list.jsp";
         //criar objeto
 
         String idStr = request.getParameter("id");
         Long id = Long.parseLong(idStr);
-        Localizacao l = em.find(Localizacao.class, id);
+        Sensor l = em.find(Sensor.class, id);
 
         int valida = 0;
 
-        Query q = em.createQuery("FROM Usuario WHERE localizacao_id = :id");
+        /*Query q = em.createQuery("FROM Usuario WHERE localizacao_id = :id");
         q.setParameter("id", id);
-        valida = q.getResultList().size();
+        valida = q.getResultList().size();*/
         
         EntityTransaction tx = em.getTransaction();
 
@@ -179,9 +202,9 @@ public class SensorServlet extends HttpServlet {
             }
         } else {
             request.setAttribute("erro", "1");
-            saida = "localizacao_list.jsp?erro=1";
+            saida = "sensor_list.jsp?erro=1";
         }
-        saida = "localizacao_list.jsp?erro=1";
+        saida = "sensor_list.jsp?erro=1";
 
         return saida;
 

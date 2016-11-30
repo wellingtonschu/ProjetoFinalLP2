@@ -5,8 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<footer class="section section-info">
-            <div class="container">
+<footer class="section section-info" style="position:absolute; bottom:0; width: 100%; "> 
+            <div class="footer">
                 <div class="row">
                     <div class="col-sm-6">
                         <h1>Sistema de Irrigação Automatizado</h1>

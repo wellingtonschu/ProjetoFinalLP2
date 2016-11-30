@@ -38,13 +38,15 @@
                 <thead>
                 <th>ID</th>
                 <th>ID Arduíno</th>
-                <th>Localização</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
             </thead>
             <c:forEach items="${locais}" var="o">
                 <tr>
                     <td><c:out value="${o.id}"/></td>
                     <td><c:out value="${o.idArduino}"/></td>
-                    <td><c:out value="${o.local}"/></td>
+                    <td><c:out value="${o.latitude}"/></td>
+                    <td><c:out value="${o.longitude}"/></td>
                     <td>
                         <a href="LocalServlet?acao=selecionar&id=${o.id}">[s]</a>
                         <a href="LocalServlet?acao=remover&id=${o.id}">[e]</a>

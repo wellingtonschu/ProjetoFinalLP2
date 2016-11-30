@@ -9,7 +9,7 @@
         <script type="text/javascript" src="jquery-google-map/jquery-google-map.js"></script>
     </head>
     <body>
-        <div class="row" style="width: 600px">
+        <div class="row">
             <div class="col-sm-12">
                 <h2 class="page-header">Posição no mapa <small>(Clique para adicionar o ponto ou arraste para indicar a localização do imóvel)</small></h2>
 
@@ -35,13 +35,25 @@
                 </div>
             </div>
         </div>
-        
+        <!-- DEFINE A POSIÇÂO PADRÃO PARA O MAPA E OP PONTEIRO -->
+        <script>
+            var lat = -27.416569;
+            var long = -49.601097;
+        </script>
+
+        <!-- AQUI TU FAZ A VERIFICAÇÃo EM JSP PRA VERIFICAR SE TEM DADOS GRAVADOS NO BANCO E EXUCUTA -->
+
+        <script>
+            var lat = -27.416569;
+            var long = -49.601097;
+        </script>
+
         <script type="text/javascript">
             var map;
             var marker = new google.maps.Marker({
                 draggable: true,
                 map: map,
-                anchorPoint: new google.maps.Point(0, -29)
+                anchorPoint: new google.maps.Point(lat,long)
             });
             var placeSearch, autocomplete;
             var componentForm = {
@@ -56,7 +68,7 @@
             $(document).ready(function() {
             function initialize() {
                 var mapOptions = {
-                    center: new google.maps.LatLng(-27.419725480890662,-49.59649085998535),
+                    center: new google.maps.LatLng(lat,long),
                     zoom: 13,
                     scrollwheel: false,
                     mapTypeId: google.maps.MapTypeId.HYBRID
@@ -66,7 +78,14 @@
                 google.maps.event.addListener(map, 'click', function(event) {
                    placeMarker(event.latLng);
                 });
-                var placemarker = false;
+                var mev = {
+                  stop: null,
+                  latLng: new google.maps.LatLng(lat,long)
+                }
+
+                google.maps.event.trigger(map, 'click', mev);
+
+                var placemarker = true;
                 function placeMarker(location) {
                     if ( placemarker ){
                         marker.setPosition(location);

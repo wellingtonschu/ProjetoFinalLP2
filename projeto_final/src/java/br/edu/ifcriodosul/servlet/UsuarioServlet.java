@@ -5,6 +5,7 @@
  */
 package br.edu.ifcriodosul.servlet;
 
+import br.edu.ifcriodosul.arduino.arduino;
 import br.edu.ifcriodosul.conceitual.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,7 +38,8 @@ public class UsuarioServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private EntityManager em = null;
-   
+    private boolean jaIniciou = false;
+    arduino inp = new arduino(); // INSTANCIANDO CLASSE ENTRADA
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,8 +76,8 @@ public class UsuarioServlet extends HttpServlet {
 
     protected String login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-         HttpSession session = request.getSession();
-        
+        HttpSession session = request.getSession();
+
         String saida = "login.jsp";
 
         String login = request.getParameter("login");
@@ -91,6 +93,13 @@ public class UsuarioServlet extends HttpServlet {
         if (loginNum >= 1) {
             saida = "index.jsp";
             session.setAttribute("logado", login);
+            if(jaIniciou == false){               
+               inp.initialize();
+               jaIniciou = true;
+            }
+            inp.enviarDados("0"); 
+            
+            
         } else {
             //por mensagem de erro
             saida = "login.jsp?erro=1";

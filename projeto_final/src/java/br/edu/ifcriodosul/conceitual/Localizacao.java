@@ -22,7 +22,8 @@ public class Localizacao implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) 
     private long id;
-    private String local;
+    private String latitude;
+    private String longitude;
     private String idArduino; 
 
     /**
@@ -40,20 +41,6 @@ public class Localizacao implements Serializable{
     }
 
     /**
-     * @return the local
-     */
-    public String getLocal() {
-        return local;
-    }
-
-    /**
-     * @param local the local to set
-     */
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
-    /**
      * @return the idArduino
      */
     public String getIdArduino() {
@@ -65,6 +52,34 @@ public class Localizacao implements Serializable{
      */
     public void setIdArduino(String idArduino) {
         this.idArduino = idArduino;
+    }
+
+    /**
+     * @return the latitude
+     */
+    public String getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * @param latitude the latitude to set
+     */
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    /**
+     * @return the longitude
+     */
+    public String getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * @param longitude the longitude to set
+     */
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
     
 }

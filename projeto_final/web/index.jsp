@@ -90,6 +90,6 @@
             </div>
         </div>
 
-        <c:import url="topo.jsp" />
+        <c:import url="rodape.jsp" />
     </body>
 </html>

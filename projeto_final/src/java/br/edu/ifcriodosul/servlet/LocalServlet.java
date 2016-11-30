@@ -109,7 +109,8 @@ public class LocalServlet extends HttpServlet {
 
         //preencher objeto
         l.setIdArduino(request.getParameter("idArduino"));
-        l.setLocal(request.getParameter("local"));
+        l.setLatitude(request.getParameter("latitude"));
+        l.setLongitude(request.getParameter("longitude"));
 
         //salvar
         EntityTransaction tx = em.getTransaction();
@@ -135,7 +136,8 @@ public class LocalServlet extends HttpServlet {
 
         //preencher objeto
         l.setIdArduino(request.getParameter("idArduino"));
-        l.setLocal(request.getParameter("local"));
+        l.setLatitude(request.getParameter("latitude"));
+        l.setLongitude(request.getParameter("longitude"));
 
         EntityTransaction tx = em.getTransaction();
         try {

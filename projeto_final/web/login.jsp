@@ -22,7 +22,7 @@
         
         <div class="container" style="width: 400px">
            
-            <form class="form-signin" method="POST" action="UsuarioServlet">
+            <form class="form-signin" method="POST" action="LoginServlet">
                 <h2 class="form-signin-heading">Login</h2>
                 <label for="txtLogin" class="sr-only">Login</label>
                 <input type="text" id="txtLogin" name="login" class="form-control" required autofocus>
