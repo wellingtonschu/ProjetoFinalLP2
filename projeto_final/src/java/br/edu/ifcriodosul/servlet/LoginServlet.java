@@ -5,7 +5,6 @@
  */
 package br.edu.ifcriodosul.servlet;
 
-import br.edu.ifcriodosul.arduino.arduino;
 import br.edu.ifcriodosul.conceitual.*;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
