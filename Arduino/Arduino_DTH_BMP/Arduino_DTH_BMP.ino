@@ -17,14 +17,13 @@
 int ledPin = 10;
 const int LEDVERDE = 10;
 
+
 int byteEntrada = 0;
 
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
-  Serial.begin(9600); 
-  Serial.println("DHT21 test!");
-  
+  Serial.begin(9600);  
  
   dht.begin();
   pinMode(LEDVERDE,OUTPUT);
@@ -47,16 +46,17 @@ void loop() {
   if (isnan(t) || isnan(h)) {
     Serial.println("Failed to read from DHT");
   } else {
-    //Serial.print("Humidity: "); 
+    Serial.print("Umidade Solo:");
+    Serial.print(analogRead(0));
+    Serial.print(";");
+    Serial.print("Umidade Ar:"); 
     Serial.print(h);
     Serial.print(";");
-    //Serial.print("Temperature: "); 
-    Serial.print(t);
-    Serial.println(";");
-    //Serial.print("Moisture Sensor Value:");
-    //Serial.println(analogRead(0)); 
+    Serial.print("Temperatura:"); 
+    Serial.println(t);   
+     
     }
-    delay(3000);
+    delay(5000);
     
   /*if((h >= 50) && (t >= 20)  && (analogRead(0) > 20)){
     pinMode(ledPin,OUTPUT);
@@ -66,12 +66,12 @@ void loop() {
   }else
     digitalWrite(ledPin, LOW);
   }*/
-      byteEntrada = Serial.read();
+    byteEntrada = Serial.read();
       if(byteEntrada == '0'){
         digitalWrite(LEDVERDE,LOW);
       }else if(byteEntrada == '1'){
         digitalWrite(LEDVERDE,HIGH);
-      }
+      }  
   
 }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.edu.ifcriodosul.conceitual;
 
 import java.io.Serializable;
@@ -13,18 +8,20 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Sensor implements Serializable{
+public class Sensor implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     @ManyToOne
     private Localizacao localizacao;
-    
+
     private String nome;
 
     /**
-     * @return the id
+     *
+     * @author Alex Manoel Coelho <alexma_coelho@hotmail.com>
      */
     public long getId() {
         return id;
@@ -64,7 +61,5 @@ public class Sensor implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    
-    
+
 }

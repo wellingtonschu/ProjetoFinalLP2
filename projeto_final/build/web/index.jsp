@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String logado = (String) session.getAttribute("logado");
@@ -12,6 +13,10 @@
 
 <c:if test="${logado == null}">
     <c:redirect url="login.jsp"/>
+</c:if>
+
+<c:if test="${leituras == null}">
+    <c:redirect url="LogServlet"/>
 </c:if>
 
 <!DOCTYPE html>
@@ -23,73 +28,68 @@
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="css\style.css" rel="stylesheet" type="text/css">
-        <title>JSP Page</title>
+        <title>Histórico de Irrigações</title>
+        
+        <script type="text/javascript">
+
+            function Atualizar() {
+                window.location.reload();
+            }
+
+        </script>
+        
     </head>
-    <body>
+    <body onload="setInterval('Atualizar()', 3000)">
         <c:import url="topo.jsp">
             <c:param name="ativa_index" value="active"/>
         </c:import>
-        
-        <div class="section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="text-center">Histórico de irrigação</h1>
-                    </div>
-                </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="text-align: center">Histórico de Irrigações</h3>
+                <c:if test="${leituras==null}">
+                    <h2>Histórico vazio</h2>
+                </c:if>
             </div>
         </div>
-        <div class="section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-striped">
+        
+        <c:if test="${leituras!=null}">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="container">
+                        <table class="table table-hover">
                             <thead>
-                                <tr>
-                                    <th style="width: 200px">Localização</th>
-                                    <th>Data</th>
-                                    <th>Horário</th>
-                                    <th>Situação</th>
-                                </tr>
+                            <th style="text-align: center; width: 30%">Localização</th>
+                            <th style="text-align: center; width: 20%">Data</th>
+                            <th style="text-align: center; width: 20%">Horário</th>
+                            <th style="text-align: center; width: 30%">Situação</th>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="width: 200px">-27.36, 47.21</td>
-                                    <td>11/10/2016</td>
-                                    <td>08:37</td>
-                                    <td style="width: 200px">Irrigando</td>
+                            <c:forEach items="${leituras}" var="o">
+                                <tr style="text-align: center">
+                                    <td><c:out value="${o.localizacao.latitude}; ${o.localizacao.longitude}"/></td>
+                                    <td><fmt:formatDate value="${o.data}" pattern="dd/MM/yyyy"/></td>
+                                    <td><fmt:formatDate value="${o.horario}" pattern="HH:mm"/></td>
+                                    <td><c:out value="${o.situacao.situacao}"/></td>
                                 </tr>
-                                <tr>
-                                    <td style="width: 200px">34.43, 78.12</td>
-                                    <td>11/10/2016</td>
-                                    <td>08:37</td>
-                                    <td style="width: 200px">Irrigando</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px">67.09, -21.23</td>
-                                    <td>11/10/2016</td>
-                                    <td>08:37</td>
-                                    <td style="width: 200px">Não irrigando</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px">12.54, 21.76</td>
-                                    <td>11/10/2016</td>
-                                    <td>08:37</td>
-                                    <td style="width: 200px">Irrigando</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px">-45.98, 98.90</td>
-                                    <td>11/10/2016</td>
-                                    <td>08:37</td>
-                                    <td style="width: 200px">Não irrigando</td>
-                                </tr>
-                            </tbody>
+                            </c:forEach>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
+        </c:if>
 
-        <c:import url="rodape.jsp" />
+        <c:if test="${tamanhoLista >= 3}">
+            <c:import url="rodape.jsp">
+                <c:param name="bottom" value="auto"/>
+            </c:import>
+        </c:if>
+
+
+        <c:if test="${tamanhoLista < 3}">
+            <c:import url="rodape.jsp">
+                <c:param name="bottom" value="0"/>
+            </c:import>
+        </c:if>
+
     </body>
 </html>

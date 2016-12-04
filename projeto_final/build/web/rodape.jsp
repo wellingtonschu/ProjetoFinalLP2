@@ -5,13 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<footer class="section section-info" style="position:absolute; bottom:0; width: 100%; "> 
-            <div class="footer">
+            <div id="rodape" class="footer" style="bottom: ${param.bottom};">
                 <div class="row">
                     <div class="col-sm-6">
                         <h1>Sistema de Irrigação Automatizado</h1>
-                        <p>Fone: (47) 9618-9551
-                            <br>Email: wellington.schu@live.com</p>
+                        <p>Fone: (47) xxxx-xxxx
+                            <br>Email: example@email.com</p>
                     </div>
                     <div class="col-sm-6">
                         <p class="text-info text-right">
@@ -29,4 +28,3 @@
                     </div>
                 </div>
             </div>
-        </footer>

@@ -14,7 +14,24 @@
 */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
+#rodape{
+    width:100%; 
+    height: auto; 
+    background-color: #66afe9; 
+    position: absolute;
+    color: white;
+}
 
+#main{
+    min-height: 250px;
+}
+
+#geral{
+    width:100%; 
+    height:auto; 
+    margin:0 auto; 
+    position: relative;
+} /*** Centraliza e define o tamanho da página ***/
 
 html {
   font-family: sans-serif;

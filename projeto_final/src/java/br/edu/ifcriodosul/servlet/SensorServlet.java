@@ -70,6 +70,8 @@ public class SensorServlet extends HttpServlet {
                 destino = novoRegistro(request, response);
             } else if (acao.equalsIgnoreCase("cancelar")) {
                 destino = listar(request, response);
+            } else if (acao.equalsIgnoreCase("cancelar")) {
+                destino = listar(request, response);
             }
             request.getRequestDispatcher(destino).forward(request, response);
         } catch (Exception e) {
@@ -82,9 +84,11 @@ public class SensorServlet extends HttpServlet {
         String saida = "";
         //JPAQL
         List<Sensor> sensores = em.createQuery("FROM Sensor").getResultList();
+        int quant = sensores.size();
 
         //repassar para pagina (com Dispatcher)
         request.setAttribute("sensores", sensores);
+        request.setAttribute("tamanhoLista" , quant);   
         saida = "sensor_list.jsp";
 
         return saida;
@@ -99,7 +103,7 @@ public class SensorServlet extends HttpServlet {
          List<Localizacao> locais = em.createQuery("FROM Localizacao").getResultList();
 
         //repassar para pagina (com Dispatcher)
-        request.setAttribute("locais", locais);
+        request.setAttribute("localizacao", locais);
         
         saida = "sensor.jsp";
         return saida;
@@ -113,9 +117,14 @@ public class SensorServlet extends HttpServlet {
         Long id = Long.parseLong(idStr);
         Sensor s = em.find(Sensor.class, id);
 
+        List<Localizacao> localizacoes = em.createQuery("FROM Localizacao").getResultList();
+
+        //repassar para pagina (com Dispatcher)
+        request.setAttribute("localizacoes", localizacoes);
+        
         //repassar para pagina (com Dispatcher)
         request.setAttribute("sensor", s);
-        saida = "sensor_list.jsp";
+        saida = "sensor.jsp";
         return saida;
 
     }
@@ -186,9 +195,9 @@ public class SensorServlet extends HttpServlet {
 
         int valida = 0;
 
-        /*Query q = em.createQuery("FROM Usuario WHERE localizacao_id = :id");
+        Query q = em.createQuery("FROM Leitura WHERE sensor_id = :id");
         q.setParameter("id", id);
-        valida = q.getResultList().size();*/
+        valida = q.getResultList().size();
         
         EntityTransaction tx = em.getTransaction();
 

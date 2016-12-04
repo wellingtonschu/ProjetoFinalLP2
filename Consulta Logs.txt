@@ -1,0 +1,7 @@
+SELECT latitude, longitude, data, horario, situacao 
+				FROM log,leiturasLog,leitura,sensor,localizacao , situacao
+                 WHERE log.situacao_id = situacao.id
+                 AND log.id = leiturasLog.log_id 
+                 AND leitura.id = leiturasLog.leitura_id 
+                 AND sensor.id=leitura.sensor_id 
+                 GROUP BY log.id;

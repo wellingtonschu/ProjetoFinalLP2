@@ -5,7 +5,6 @@
  */
 package br.edu.ifcriodosul.servlet;
 
-import br.edu.ifcriodosul.arduino.arduino;
 import br.edu.ifcriodosul.conceitual.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,13 +19,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Alex
+ * @author Alex Manoel Coelho <alexma_coelho@hotmail.com>
  */
-public class UsuarioServlet extends HttpServlet {
+public class ConfiguracaoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,8 +36,6 @@ public class UsuarioServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private EntityManager em = null;
-    private boolean jaIniciou = false;
-    arduino inp = new arduino(); // INSTANCIANDO CLASSE ENTRADA
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,26 +43,30 @@ public class UsuarioServlet extends HttpServlet {
         em = emf.createEntityManager();
         try {
 
-            String acao = "";
-            String destino = "login.jsp";
+            String acao = "listar";
+            String destino = "configuracao_list.jsp";
 
             //testa se existe a acao
             if (request.getParameter("acao") != null) {
                 acao = request.getParameter("acao");
             }
-            if (acao.equalsIgnoreCase("logar")) {
-                destino = login(request, response);
+            if (acao.equalsIgnoreCase("listar")) {
+                destino = listar(request, response);
             } else if (acao.equalsIgnoreCase("inserir")) {
                 destino = inserir(request, response);
                 destino = listar(request, response);
             } else if (acao.equalsIgnoreCase("alterar")) {
                 destino = alterar(request, response);
-                destino = listar(request, response);
+                //destino = listar(request, response);
             } else if (acao.equalsIgnoreCase("remover")) {
                 destino = remover(request, response);
                 destino = listar(request, response);
             } else if (acao.equalsIgnoreCase("selecionar")) {
                 destino = selecionar(request, response);
+            } else if (acao.equalsIgnoreCase("cancelar")) {
+                destino = listar(request, response);
+            } else if (acao.equalsIgnoreCase("novoRegistro")) {
+                destino = novoRegistro(request, response);
             }
             request.getRequestDispatcher(destino).forward(request, response);
         } catch (Exception e) {
@@ -74,53 +74,39 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
-    protected String login(HttpServletRequest request, HttpServletResponse response)
+    protected String listar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        HttpSession session = request.getSession();
+        String saida = "";
+        int quant = 0;
+        //JPAQL
+        List<Configuracao> configuracoes = em.createQuery("FROM Configuracao").getResultList();
 
-        String saida = "login.jsp";
-
-        String login = request.getParameter("login");
-        String senha = request.getParameter("senha");
-
-        int loginNum = 0;
-
-        Query q = em.createQuery("FROM Usuario WHERE login = :login AND senha = :senha");
-        q.setParameter("login", login);
-        q.setParameter("senha", senha);
-        loginNum = q.getResultList().size();
-
-        if (loginNum >= 1) {
-            saida = "index.jsp";
-            session.setAttribute("logado", login);
-            if(jaIniciou == false){               
-               inp.initialize();
-               jaIniciou = true;
-            }
-            inp.enviarDados("0"); 
-            
-            
+        if (configuracoes == null) {
+            quant = 0;
         } else {
-            //por mensagem de erro
-            saida = "login.jsp?erro=1";
+            quant = configuracoes.size();
         }
+
+        //repassar para pagina (com Dispatcher)
+        request.setAttribute("configuracoes", configuracoes);
+        request.setAttribute("tamanhoLista", quant);
+        saida = "configuracao_list.jsp";
 
         return saida;
 
     }
 
-    protected String listar(HttpServletRequest request, HttpServletResponse response)
+    protected String novoRegistro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String saida = "";
-        //JPAQL
-        List<Usuario> usuarios = em.createQuery("from Usuario").getResultList();
+
+        List<Localizacao> locais = em.createQuery("FROM Localizacao").getResultList();
 
         //repassar para pagina (com Dispatcher)
-        request.setAttribute("usuarios", usuarios);
-        saida = "usuario_list.jsp";
+        request.setAttribute("localizacao", locais);
 
+        saida = "configuracao.jsp";
         return saida;
-
     }
 
     protected String selecionar(HttpServletRequest request, HttpServletResponse response)
@@ -129,34 +115,46 @@ public class UsuarioServlet extends HttpServlet {
 
         String idStr = request.getParameter("id");
         Long id = Long.parseLong(idStr);
-        Usuario u = em.find(Usuario.class, id);
+        Configuracao c = em.find(Configuracao.class, id);
+
+        List<Localizacao> localizacoes = em.createQuery("FROM Localizacao").getResultList();
 
         //repassar para pagina (com Dispatcher)
-        request.setAttribute("usuario", u);
-        saida = "usuario_list.jsp";
+        request.setAttribute("localizacoes", localizacoes);
+        //repassar para pagina (com Dispatcher)
+        request.setAttribute("configuracao", c);
+        saida = "configuracao.jsp";
         return saida;
 
     }
 
     protected String inserir(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String saida = "usuario_list.jsp";
-        //criar objeto
-        Usuario u = new Usuario();
-        //preencher objeto
+        String saida = "configuracao_list.jsp";
 
-        /*u.setDescricao(request.getParameter("descricao"));
-        u.setNome(request.getParameter("nome"));
-        u.setPrecoCompra(Float.parseFloat(request.getParameter("precoCompra")));
-        u.setPrecoVenda(Float.parseFloat(request.getParameter("precoVenda")));
-        u.setQtdMinima(Integer.parseInt(request.getParameter("qtdMinima")));
-        u.setQuantidade(Integer.parseInt(request.getParameter("quantidade")));
-         */
+        //criar objeto
+        Configuracao c = new Configuracao();
+        Localizacao l = new Localizacao();
+
+        l.setId(Long.parseLong(request.getParameter("localizacao")));
+
+        //preencher objeto localizacao
+        c.setLocalizacao(l);
+
+        //preencher objeto conf
+        c.setNomePlantacao(request.getParameter("nomePlantacao"));
+        c.setUmidadeDoSoloMin(Float.parseFloat(request.getParameter("umidadeDoSoloMin")));
+        c.setUmidadeDoSoloMax(Float.parseFloat(request.getParameter("umidadeDoSoloMax")));
+        c.setUmidadeDoArMin(Float.parseFloat(request.getParameter("umidadeDoArMin")));
+        c.setUmidadeDoArMax(Float.parseFloat(request.getParameter("umidadeDoArMax")));
+        c.setTemperaturaMin(Float.parseFloat(request.getParameter("temperaturaMin")));
+        c.setTemperaturaMax(Float.parseFloat(request.getParameter("temperaturaMax")));
+
         //salvar
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.persist(u);
+            em.persist(c);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -167,26 +165,33 @@ public class UsuarioServlet extends HttpServlet {
 
     protected String alterar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String saida = "usuario_list.jsp";
-        //criar objeto
+        String saida = "index.jsp";
 
+        //criar objeto
         String idStr = request.getParameter("id");
         Long id = Long.parseLong(idStr);
-        Usuario u = em.find(Usuario.class, id);
+        
+        Configuracao c = em.find(Configuracao.class, id);
+        Localizacao l = new Localizacao();
 
-        //preencher objeto
-        /*
-        p.setDescricao(request.getParameter("descricao"));
-        p.setNome(request.getParameter("nome"));
-        p.setPrecoCompra(Float.parseFloat(request.getParameter("precoCompra")));
-        p.setPrecoVenda(Float.parseFloat(request.getParameter("precoVenda")));
-        p.setQtdMinima(Integer.parseInt(request.getParameter("qtdMinima")));
-        p.setQuantidade(Integer.parseInt(request.getParameter("quantidade")));
-         */
+        l.setId(Long.parseLong(request.getParameter("localizacao")));
+
+        //preencher objeto localizacao
+        c.setLocalizacao(l);
+
+        //preencher objeto conf
+        c.setNomePlantacao(request.getParameter("nomePlantacao"));
+        c.setUmidadeDoSoloMin(Float.parseFloat(request.getParameter("umidadeDoSoloMin")));
+        c.setUmidadeDoSoloMax(Float.parseFloat(request.getParameter("umidadeDoSoloMax")));
+        c.setUmidadeDoArMin(Float.parseFloat(request.getParameter("umidadeDoArMin")));
+        c.setUmidadeDoArMax(Float.parseFloat(request.getParameter("umidadeDoArMax")));
+        c.setTemperaturaMin(Float.parseFloat(request.getParameter("temperaturaMin")));
+        c.setTemperaturaMax(Float.parseFloat(request.getParameter("temperaturaMax")));
+
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(u);
+            em.merge(c);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -198,21 +203,33 @@ public class UsuarioServlet extends HttpServlet {
 
     protected String remover(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String saida = "usuario_list.jsp";
+        String saida = "configuracao_list.jsp";
         //criar objeto
 
         String idStr = request.getParameter("id");
         Long id = Long.parseLong(idStr);
-        Usuario u = em.find(Usuario.class, id);
+        Configuracao c = em.find(Configuracao.class, id);
 
+        int valida = 0;
+
+        /* Query q = em.createQuery("FROM Localizacao WHERE configuracao_id = :id");
+        q.setParameter("id", id);
+        valida = q.getResultList().size();*/
         EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.remove(u);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
+
+        if (valida == 0) {
+            try {
+                tx.begin();
+                em.remove(c);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+            }
+        } else {
+            request.setAttribute("erro", "1");
+            saida = "configuracao_list.jsp?erro=1";
         }
+        saida = "configuracao_list.jsp?erro=1";
 
         return saida;
 

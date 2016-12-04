@@ -28,7 +28,7 @@
                         <ul class="nav nav-pills">                          
                            
                             <li class="${param.ativa_index}">
-                                <a href="index.jsp">Home</a>
+                                <a href="LogServlet">Home</a>
                             </li>                            
                             
                             <li class="${param.ativa_localizacao}">
@@ -37,8 +37,8 @@
                             <li class="${param.ativa_sensor}">
                                 <a href="SensorServlet">Sensores</a>
                             </li>
-                            <li>
-                                <a href="configuracao.html">Configuração</a>
+                            <li class="${param.ativa_configuracao}">
+                                <a href="ConfiguracaoServlet">Configuração</a>
                             </li>
                             <ul class="nav nav-pills navbar-right">                                
                             <li>

@@ -14,6 +14,20 @@ import gnu.io.SerialPortEventListener;
 import static java.awt.image.ImageObserver.ERROR;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import br.edu.ifcriodosul.conceitual.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class arduino implements SerialPortEventListener {
 
@@ -43,7 +57,7 @@ public class arduino implements SerialPortEventListener {
      */
     private static final int TIME_OUT = 3000;
     private OutputStream output = null;
-    
+
     private static final String verdeON = "1";
     /**
      * Default bits per second for COM port.
@@ -51,7 +65,7 @@ public class arduino implements SerialPortEventListener {
     private static final int DATA_RATE = 9600;
 
     public void initialize() {
-       
+
         CommPortIdentifier portId = null;
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -103,11 +117,11 @@ public class arduino implements SerialPortEventListener {
             serialPort.close();
         }
     }
-    
-     public void enviarDados(String dados){
-        try{
-        output.write(dados.getBytes());            
-        }catch(Exception e){
+
+    public void enviarDados(String dados) {
+        try {
+            output.write(dados.getBytes());
+        } catch (Exception e) {
             System.exit(ERROR);
         }
     }
@@ -122,6 +136,15 @@ public class arduino implements SerialPortEventListener {
                 String inputLine = input.readLine();
                 entrada = inputLine.split(";");
                 System.out.println(".." + inputLine);
+
+                //Umidade solo leitura
+                System.out.println(entrada[0]);
+                System.out.println(entrada[1]);
+                System.out.println(entrada[2]);
+
+                /*String idStr = request.getParameter("id");
+                Long id = Long.parseLong(idStr);
+                Configuracao c = em.find(Configuracao.class, id);*/
                 enviarDados(verdeON);
                 //up.updateDados(entrada);
             } catch (Exception e) {
@@ -130,8 +153,5 @@ public class arduino implements SerialPortEventListener {
         }
         // Ignore all the other eventTypes, but you should consider the other ones.
     }
-    
 
-
-    
 }

@@ -40,25 +40,20 @@
 
                 <div class="row" style="width: 600px">
                     <div class="col-sm-12">
-                        <h2 class="page-header">Posição no mapa <small>(Clique para adicionar o ponto ou arraste para indicar a localização do imóvel)</small></h2>
+                        <h2 class="page-header" style="text-align: center;">Posição no mapa <small>(Clique para adicionar o ponto ou arraste para indicar a localização do imóvel)</small></h2>
 
                         <div class="box">
 
                             <div id="map-canvas" style="height: 400px"></div>
 
+                            
+                                <input value="${localizacao.latitude}" class="form-control" type="hidden" id="input-latitude" name="latitude">
+                            
 
-
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                                <input value="${localizacao.latitude}" class="form-control" type="text" placeholder="Latitude" id="input-latitude" name="latitude">
-                            </div>
-
-
-
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                                <input value="${localizacao.longitude}" class="form-control" type="text" placeholder="Longitude" id="input-longitude" name="longitude">
-                            </div>
+                           
+                                
+                                <input value="${localizacao.longitude}" class="form-control" type="hidden" id="input-longitude" name="longitude">
+                            
 
 
                         </div>
@@ -73,16 +68,16 @@
 
                 <div style="text-align: right;">
                     <c:if test="${localizacao.id == null}">
-                        <button class="btn btn-primary" type="submit" name="acao" value="inserir">
+                        <button class="btn btn-success" type="submit" name="acao" value="inserir">
                             Salvar
                         </button>                        
                     </c:if>
                     <c:if test="${localizacao.id != null}">
-                        <button class="btn btn-primary" type="submit" name="acao" value="alterar">
+                        <button class="btn btn-success" type="submit" name="acao" value="alterar">
                             alterar
                         </button>
                     </c:if>
-                    <button class="btn btn-default" type="reset">cancelar</button>
+                    <button class="btn btn-default" type="submit" name="acao" value="cancelar">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -100,7 +95,7 @@
             </script>
             <c:if test="${localizacao.longitude != null}">
                 <script>
-                var long = ${localizacao.longitude};
+                    var long = ${localizacao.longitude};
                 </script>
             </c:if>
         </c:if>
@@ -244,8 +239,10 @@
 
             }
         </script>
+        <br/>
 
-
-        <!--<c:import url="rodape.jsp" />-->
+        <c:import url="rodape.jsp">
+            <c:param name="bottom" value="auto"/>
+        </c:import>
     </body>
 </html>

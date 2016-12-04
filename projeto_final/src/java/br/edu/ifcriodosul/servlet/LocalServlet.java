@@ -64,6 +64,8 @@ public class LocalServlet extends HttpServlet {
                 destino = listar(request, response);
             } else if (acao.equalsIgnoreCase("selecionar")) {
                 destino = selecionar(request, response);
+            } else if (acao.equalsIgnoreCase("cancelar")) {
+                destino = listar(request, response);
             }
             request.getRequestDispatcher(destino).forward(request, response);
         } catch (Exception e) {
@@ -76,15 +78,18 @@ public class LocalServlet extends HttpServlet {
         String saida = "";
         //JPAQL
         List<Localizacao> locais = em.createQuery("FROM Localizacao").getResultList();
+         int quant = locais.size();
 
         //repassar para pagina (com Dispatcher)
         request.setAttribute("locais", locais);
+        request.setAttribute("tamanhoLista" , quant);  
         saida = "localizacao_list.jsp";
 
         return saida;
 
     }
-
+    
+   
     protected String selecionar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String saida = "";
