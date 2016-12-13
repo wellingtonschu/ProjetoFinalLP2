@@ -383,10 +383,10 @@ public class LoginServlet extends HttpServlet implements SerialPortEventListener
     public void serialEvent(SerialPortEvent oEvent) {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
-                inputLine = input.readLine();
+                /*inputLine = input.readLine();
                 entrada = inputLine.split(";");
                 System.out.println(".." + inputLine);
-
+                
                 //Umidade solo
                 pegaUmidadeSolo = null;
                 pegaUmidadeSolo = entrada[0].split(":");
@@ -399,148 +399,148 @@ public class LoginServlet extends HttpServlet implements SerialPortEventListener
                 pegaTemperatura = null;
                 pegaTemperatura = entrada[2].split(":");
                 System.out.println(pegaTemperatura[1]);
-
+                
                 pegaIDArduino = "ArduinoUno16.000";
                 localizacoes = null;
                 localizacoes = em.createQuery("FROM Localizacao").getResultList();
-
+                
                 //a partir do idPassado acha a localização
                 for (int i = 0; i < localizacoes.size(); i++) {
-                    if (localizacoes.get(i).getIdArduino().equals(pegaIDArduino)) {
-                        localizacao = em.find(Localizacao.class, localizacoes.get(i).getId());
-                        break;
-                    }
+                if (localizacoes.get(i).getIdArduino().equals(pegaIDArduino)) {
+                localizacao = em.find(Localizacao.class, localizacoes.get(i).getId());
+                break;
+                }
                 }
                 configuracoes = null;
                 configuracoes = em.createQuery("FROM Configuracao").getResultList();
                 c = new Configuracao();
                 //a partir do id da localizacao achado - acha a configuracao que corresponde a localizacao
                 for (int i = 0; i < configuracoes.size(); i++) {
-                    if (configuracoes.get(i).getLocalizacao().getId() == localizacao.getId()) {
-                        c = em.find(Configuracao.class, configuracoes.get(i).getId());
-                        break;
-                    }
+                if (configuracoes.get(i).getLocalizacao().getId() == localizacao.getId()) {
+                c = em.find(Configuracao.class, configuracoes.get(i).getId());
+                break;
                 }
-
+                }
+                
                 //condicoes para ligar
                 if ((Float.parseFloat(pegaUmidadeSolo[1]) > c.getUmidadeDoSoloMax())
-                        && (Float.parseFloat(pegaUmidadeAr[1]) > c.getUmidadeDoArMax())
-                        && (Float.parseFloat(pegaTemperatura[1]) > c.getTemperaturaMax())) {
-                    situacao = 1;
-                    try {
-                        output.write("1".getBytes());
-                    } catch (Exception e) {
-                        System.exit(ERROR);
-                    }
-                    System.out.println("LIGA! -> Dados Arduino: " + pegaUmidadeAr[1] + " - Dados banco: " + c.getUmidadeDoArMax());
-                } else {
-                    situacao = 2;
-                    try {
-                        output.write("0".getBytes());
-                    } catch (Exception e) {
-                        System.exit(ERROR);
-                    }
-                    System.out.println("DESLIGA!");
+                && (Float.parseFloat(pegaUmidadeAr[1]) > c.getUmidadeDoArMax())
+                && (Float.parseFloat(pegaTemperatura[1]) > c.getTemperaturaMax())) {
+                situacao = 1;
+                try {
+                output.write("1".getBytes());
+                } catch (Exception e) {
+                System.exit(ERROR);
                 }
-
+                System.out.println("LIGA! -> Dados Arduino: " + pegaUmidadeAr[1] + " - Dados banco: " + c.getUmidadeDoArMax());
+                } else {
+                situacao = 2;
+                try {
+                output.write("0".getBytes());
+                } catch (Exception e) {
+                System.exit(ERROR);
+                }
+                System.out.println("DESLIGA!");
+                }
+                
                 //salvando log no banco
                 log = new Log();
                 sit = new Situacao();
-
+                
                 sit.setId(situacao);
-
+                
                 data = new Date();
                 log.setSituacao(sit);
                 log.setData(data);
                 log.setHorario(data);
                 log.setLocalizacao(localizacao);
-
+                
                 //salvar
                 EntityTransaction tx = em.getTransaction();
                 try {
-                    tx.begin();
-                    em.persist(log);
-                    tx.commit();
+                tx.begin();
+                em.persist(log);
+                tx.commit();
                 } catch (Exception e) {
-                    tx.rollback();
+                tx.rollback();
                 }
-
+                
                 //salvando leitura do sensor Moisture sensor (Umidade do solo)
                 leitura = new Leitura();
                 tipoLeitura = new TipoLeitura();
                 s = new Sensor();
-
+                
                 tipoLeitura.setId(1);
                 s.setId(1);
-
+                
                 //preencher objeto
                 leitura.setTipoLeitura(tipoLeitura);
                 leitura.setLog(log);
                 leitura.setSensor(s);
                 leitura.setDadosLeitura(Float.parseFloat(pegaUmidadeSolo[1]));
-
+                
                 //salvar
                 tx = em.getTransaction();
                 try {
-                    tx.begin();
-                    em.persist(leitura);
-                    tx.commit();
+                tx.begin();
+                em.persist(leitura);
+                tx.commit();
                 } catch (Exception e) {
-                    tx.rollback();
+                tx.rollback();
                 }
-
+                
                 //salvando leitura do sensor DHT-22 sensor (Umidade do ar)
                 leitura = new Leitura();
                 tipoLeitura = new TipoLeitura();
                 s = new Sensor();
-
+                
                 tipoLeitura.setId(2);
                 s.setId(2);
-
+                
                 //preencher objeto
                 leitura.setTipoLeitura(tipoLeitura);
                 leitura.setLog(log);
                 leitura.setSensor(s);
                 leitura.setDadosLeitura(Float.parseFloat(pegaUmidadeAr[1]));
-
+                
                 //salvar
                 tx = em.getTransaction();
                 try {
-                    tx.begin();
-                    em.persist(leitura);
-                    tx.commit();
+                tx.begin();
+                em.persist(leitura);
+                tx.commit();
                 } catch (Exception e) {
-                    tx.rollback();
+                tx.rollback();
                 }
-
+                
                 //salvando leitura do sensor DHT-22 sensor (Temperatura)
                 leitura = new Leitura();
                 tipoLeitura = new TipoLeitura();
                 s = new Sensor();
-
+                
                 tipoLeitura.setId(3);
                 s.setId(2);
-
+                
                 //preencher objeto
                 leitura.setTipoLeitura(tipoLeitura);
                 leitura.setLog(log);
                 leitura.setSensor(s);
                 leitura.setDadosLeitura(Float.parseFloat(pegaTemperatura[1]));
-
+                
                 //salvar
                 tx = em.getTransaction();
                 try {
-                    tx.begin();
-                    em.persist(leitura);
-                    tx.commit();
+                tx.begin();
+                em.persist(leitura);
+                tx.commit();
                 } catch (Exception e) {
-                    tx.rollback();
+                tx.rollback();
                 }
-
+                
                 System.out.println(c.getNomePlantacao());
                 System.out.println("ID -> " + localizacao.getId());
                 c = new Configuracao();
-                System.out.println(c.getNomePlantacao());
+                System.out.println(c.getNomePlantacao());*/
 
                 //up.updateDados(entrada);
             } catch (Exception e) {

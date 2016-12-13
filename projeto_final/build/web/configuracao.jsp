@@ -88,7 +88,7 @@
 
                     <div class="row">                        
                         <div class="col-md-6" style="color: #551111; text-align: center;">
-                            <h2 >Umidade do Solo</h2>
+                            <h2 >Umidade do Solo (KPa)</h2>
                             <div class="col-md-6">
                                 <label for="txtUmidadeDoSoloMin">Mínima</label>
                                 <input tabindex="1" class="form-control" id="txtUmidadeDoSoloMin" name="umidadeDoSoloMin" value="${configuracao.umidadeDoSoloMin}" maxlength="5"/>
@@ -100,7 +100,7 @@
                         </div>
 
                         <div class="col-md-6" style="color: #006ac4;"> 							 
-                            <h2 style="text-align: center;">Umidade do Ar</h2>
+                            <h2 style="text-align: center;">Umidade do Ar (%)</h2>
                             <div class="col-md-6">
                                 <label for="txtUmidadeDoArMin">Mínima</label>
                                 <input type="text" class="form-control" id="txtUmidadeDoArMin" name="umidadeDoArMin" value="${configuracao.umidadeDoArMin}" maxlength="5"/>
@@ -116,7 +116,7 @@
                     <div class="row">
                         <div class="container" style="width: 400px; text-align: center; color: #c90d0d;">  
                             <div class="col-md-12">
-                                <h2>Temperatura</h2>
+                                <h2>Temperatura (ºC)</h2>
                                 <div class="col-md-6">
                                     <label for="txtTemperaturaMin">Mínima</label>
                                     <input type="text" class="form-control" id="txtTemperaturaMin" name="temperaturaMin" value="${configuracao.temperaturaMin}" maxlength="5"/>

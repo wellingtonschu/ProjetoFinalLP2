@@ -5,6 +5,7 @@
  */
 package br.edu.ifcriodosul.servlet;
 
+import br.edu.ifcriodosul.arduino.Arduino;
 import br.edu.ifcriodosul.conceitual.Localizacao;
 import br.edu.ifcriodosul.conceitual.Sensor;
 import br.edu.ifcriodosul.conceitual.Usuario;
@@ -39,7 +40,10 @@ public class SensorServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private EntityManager em = null;
-
+    private boolean jaIniciou = false;
+    
+    Arduino ard = new Arduino();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ex_jpaPU");
@@ -90,6 +94,11 @@ public class SensorServlet extends HttpServlet {
         request.setAttribute("sensores", sensores);
         request.setAttribute("tamanhoLista" , quant);   
         saida = "sensor_list.jsp";
+        
+        if (jaIniciou == false) {
+            //ard.initialize();
+            jaIniciou = true;
+        }
 
         return saida;
 

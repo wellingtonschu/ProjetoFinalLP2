@@ -5,6 +5,7 @@
  */
 package br.edu.ifcriodosul.servlet;
 
+import br.edu.ifcriodosul.arduino.Arduino;
 import br.edu.ifcriodosul.conceitual.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,6 +38,9 @@ public class LocalServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private EntityManager em = null;
+    private boolean jaIniciou = false;
+    
+    Arduino ard = new Arduino();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -84,6 +88,11 @@ public class LocalServlet extends HttpServlet {
         request.setAttribute("locais", locais);
         request.setAttribute("tamanhoLista" , quant);  
         saida = "localizacao_list.jsp";
+        
+        if (jaIniciou == false) {
+            ard.initialize();
+            jaIniciou = true;
+        }
 
         return saida;
 

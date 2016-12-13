@@ -5,6 +5,7 @@
  */
 package br.edu.ifcriodosul.servlet;
 
+import br.edu.ifcriodosul.arduino.Arduino;
 import br.edu.ifcriodosul.conceitual.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,6 +37,9 @@ public class ConfiguracaoServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private EntityManager em = null;
+    private boolean jaIniciou = false;
+    
+    Arduino ard = new Arduino();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -86,11 +90,16 @@ public class ConfiguracaoServlet extends HttpServlet {
         } else {
             quant = configuracoes.size();
         }
-
+        
         //repassar para pagina (com Dispatcher)
         request.setAttribute("configuracoes", configuracoes);
         request.setAttribute("tamanhoLista", quant);
         saida = "configuracao_list.jsp";
+        
+        if (jaIniciou == false) {
+            //ard.initialize();
+            jaIniciou = true;
+        }
 
         return saida;
 

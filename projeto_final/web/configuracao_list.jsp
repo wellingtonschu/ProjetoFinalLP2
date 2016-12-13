@@ -48,9 +48,9 @@
                         <thead>
                         <th>ID</th>
                         <th style="text-align: center;">Plantação</th>
-                        <th style="text-align: center;" colspan="2">Umidade do Solo</th>
-                        <th style="text-align: center;" colspan="2">Umidade do Ar</th>
-                        <th style="text-align: center;" colspan="2">Temperatura</th>
+                        <th style="text-align: center;" colspan="2">Umidade do Solo (KPa)</th>
+                        <th style="text-align: center;" colspan="2">Umidade do Ar (%)</th>
+                        <th style="text-align: center;" colspan="2">Temperatura (ºC)</th>
                         <th style="text-align: center;">ID Arduino</th>
                         <th></th>
                         </thead>

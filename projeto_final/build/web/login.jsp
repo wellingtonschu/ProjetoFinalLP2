@@ -26,6 +26,7 @@
                 <h2 class="form-signin-heading">Login</h2>
                 <label for="txtLogin" class="sr-only">Login</label>
                 <input type="text" id="txtLogin" name="login" class="form-control" required autofocus>
+                <br/>
                 <label for="txtSenha" class="sr-only">Password</label>
                 <input type="password" id="txtSenha" class="form-control" name="senha" required autofocus>
                 <div class="checkbox">

@@ -5,6 +5,7 @@
  */
 package br.edu.ifcriodosul.servlet;
 
+import br.edu.ifcriodosul.arduino.Arduino;
 import br.edu.ifcriodosul.conceitual.*;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -102,6 +103,8 @@ public class LogServlet extends HttpServlet implements SerialPortEventListener {
      * Default bits per second for COM port.
      */
     private static final int DATA_RATE = 9600;
+    
+    Arduino ard = new Arduino();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -143,7 +146,7 @@ public class LogServlet extends HttpServlet implements SerialPortEventListener {
             throws ServletException, IOException, SQLException {
         String saida = "";
         //JPAQL
-        List<Log> leituraL = em.createQuery("FROM Log").getResultList();
+        List<Log> leituraL = em.createQuery("FROM Log ORDER BY id desc LIMIT 100").getResultList();
         int quant = leituraL.size();
 
         //repassar para pagina (com Dispatcher)
@@ -152,7 +155,7 @@ public class LogServlet extends HttpServlet implements SerialPortEventListener {
         saida = "index.jsp";
 
         if (jaIniciou == false) {
-            initialize();
+            ard.initialize();
             jaIniciou = true;
         }
 

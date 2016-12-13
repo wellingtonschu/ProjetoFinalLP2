@@ -24,6 +24,10 @@
         <servlet-name>ConfiguracaoServlet</servlet-name>
         <servlet-class>br.edu.ifcriodosul.servlet.ConfiguracaoServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PegaUltimoServlet</servlet-name>
+        <servlet-class>br.edu.ifcriodosul.conceitual.PegaUltimoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>ConfiguracaoServlet</servlet-name>
         <url-pattern>/ConfiguracaoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PegaUltimoServlet</servlet-name>
+        <url-pattern>/PegaUltimoServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
